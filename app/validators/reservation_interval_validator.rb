@@ -33,8 +33,19 @@ class ReservationIntervalValidator < ActiveModel::Validator
       return record.errors[:reservation] << "must relate to any restaurant"
     end
 
-    reservation_start_at, reservation_end_at = record.start_at.strftime("%H:%M"), record.end_at.strftime("%H:%M")
     message = "is not in restaurant operating time"
+
+    if record.restaurant.open_at == record.restaurant.close_at
+      return true
+    else
+      # check in reservation during is more than 24 hours
+      if (record.end_at - record.start_at) / (60 * 60 * 24) >= 1
+        return record.errors[:end_at] << (message)
+      end
+    end
+
+    reservation_start_at = record.start_at.strftime("%H:%M")
+    reservation_end_at = record.end_at.strftime("%H:%M")
 
     if record.restaurant.open_at < record.restaurant.close_at
 
