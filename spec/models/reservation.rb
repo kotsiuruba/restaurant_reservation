@@ -11,11 +11,11 @@ RSpec.describe Reservation, :type => :model do
     expect(subject).to be_valid
   end
 
-  # it "is not valid without table" do
-  #   subject.start_at = DateTime.parse "18.07.2016 12:00"
-  #   subject.end_at = DateTime.parse "18.07.2016 13:00"
-  #   expect(subject).to_not be_valid
-  # end
+  it "is not valid without table" do
+    subject.start_at = DateTime.parse "18.07.2016 12:00"
+    subject.end_at = DateTime.parse "18.07.2016 13:00"
+    expect(subject).to_not be_valid
+  end
 
   it "is not valid without start_at" do
     subject.table = Table.first

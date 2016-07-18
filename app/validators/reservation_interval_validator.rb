@@ -29,6 +29,10 @@ class ReservationIntervalValidator < ActiveModel::Validator
 
     Rails.logger.debug("Validate restaurant time work matching")
 
+    if record.restaurant.nil?
+      return record.errors[:reservation] << "must relate to any restaurant"
+    end
+
     reservation_start_at, reservation_end_at = record.start_at.strftime("%H:%M"), record.end_at.strftime("%H:%M")
     message = "is not in restaurant operating time"
 
