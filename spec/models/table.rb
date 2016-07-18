@@ -14,23 +14,38 @@ RSpec.describe Table, :type => :model do
     described_class.new(:restaurant => restaurant, :number => 1)
   }
 
-  it "is valid with valid attributes" do
-    expect(subject).to be_valid
+  describe "Validations" do
+    it "is valid with valid attributes" do
+      expect(subject).to be_valid
+    end
+
+    it "is not valid without restaurant" do
+      subject.restaurant = nil
+      expect(subject).to_not be_valid
+    end
+
+    it "is not valid when table with number in restaurant exist" do
+      Table.create(:restaurant => restaurant, :number => 1)
+      expect(subject).to_not be_valid
+    end
+
+    it "is not valid without number" do
+      subject.number = nil
+      expect(subject).to_not be_valid
+    end
+
   end
 
-  it "is not valid without restaurant" do
-    subject.restaurant = nil
-    expect(subject).to_not be_valid
-  end
+  describe "Associations" do
+    it "belongs to restaurant" do
+      assc = described_class.reflect_on_association(:restaurant)
+      expect(assc.macro).to eq :belongs_to
+    end
 
-  it "is not valid when table with number in restaurant exist" do
-    Table.create(:restaurant => restaurant, :number => 1)
-    expect(subject).to_not be_valid
-  end
-
-  it "is not valid without number" do
-    subject.number = nil
-    expect(subject).to_not be_valid
+    it "has many reservations" do
+      assc = described_class.reflect_on_association(:reservations)
+      expect(assc.macro).to eq :has_many
+    end
   end
 
 end
