@@ -7,4 +7,7 @@ class Restaurant < ActiveRecord::Base
   validates :open_at, :close_at, :time => true
   validates :title, :presence =>  true
 
+  def is_around_the_clock?
+    open_at == close_at
+  end
 end
