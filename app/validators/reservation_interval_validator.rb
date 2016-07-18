@@ -1,4 +1,4 @@
-class DateIntervalValidator < ActiveModel::Validator
+class ReservationIntervalValidator < ActiveModel::Validator
 
   def validate(record)
     Rails.logger.debug "Validate reservation interval:"
