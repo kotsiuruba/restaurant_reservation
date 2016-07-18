@@ -50,7 +50,7 @@ class DateIntervalValidator < ActiveModel::Validator
 
   def time_intersection(record)
 
-    # Rails.logger.debug("Validate time intersection with another reservation")
+    Rails.logger.debug("Validate time intersection with another reservation")
     if Reservation.where(:table_id => record.table_id).where("(start_at, end_at) OVERLAPS (?, ?)", record.start_at, record.end_at).count > 0
       record.errors[:reservation] << (options[:message] || "intersects with another reservation")
     end
